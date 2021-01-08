@@ -1,0 +1,107 @@
+// Базовые настройки 
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style-type: none;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+img {
+  margin: 0;
+}
+
+body {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  font-weight: 500;
+  color: #070707;
+  background-color: #fff;
+  // line-height: 22px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+//main
+.todo-wrapper{
+  height: 400px;
+  background-color: #c2c2c2;
+  padding: 0 10px;
+}
+
+.header{
+  &-task{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #070707;
+
+    &__logo{
+      width: 20%;
+      text-align: center;
+    }
+  }
+
+  &-menu{
+    width: 80%;
+    ul{
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.task-menu{
+  &-list {
+    display: inline-block;
+    margin-left: 15px;
+  }
+
+  &__btn{
+
+  }
+}
+
+.task-list{
+  &-wrapper{
+    margin-top: 15px;
+  }
+
+  &__item{
+    margin-top: 15px;
+    border-bottom: 1px solid #000;
+  }
+  
+  &-add{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #df891a;
+    background: transparent;
+
+    &:focus{
+      outline: none;
+    }
+  }
+}
