@@ -86,7 +86,16 @@ body {
   margin-left: 15px;
 }
 
+.task-menu__btn {
+  display: none;
+}
+
+#add__task-btn {
+  display: block;
+}
+
 .task-list-wrapper {
+  font-size: 18px;
   margin-top: 15px;
 }
 
@@ -95,8 +104,14 @@ body {
   border-bottom: 1px solid #000;
 }
 
+.task-list__label {
+  width: 100%;
+}
+
 .task-list-add {
   width: 100%;
+  font-size: 18px;
+  margin-top: 15px;
   border: none;
   border-bottom: 1px solid #df891a;
   background: transparent;

@@ -80,12 +80,17 @@ body {
   }
 
   &__btn{
-
+    display: none;
   }
+}
+
+#add__task-btn{
+  display: block;
 }
 
 .task-list{
   &-wrapper{
+    font-size: 18px;
     margin-top: 15px;
   }
 
@@ -93,9 +98,15 @@ body {
     margin-top: 15px;
     border-bottom: 1px solid #000;
   }
+
+  &__label{
+    width: 100%;
+  }
   
   &-add{
     width: 100%;
+    font-size: 18px;
+    margin-top: 15px;
     border: none;
     border-bottom: 1px solid #df891a;
     background: transparent;
