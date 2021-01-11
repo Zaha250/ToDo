@@ -1,8 +1,8 @@
-const addTaskBtn = document.getElementById('add__task-btn'),
-      setTaskBtn = document.getElementById('set__task-btn'),
+const headerMenu = document.querySelector('.header-menu ul'),
+      addTaskBtn = document.getElementById('add__task-btn'),
+      readyTaskBtn = document.getElementById('ready__task-btn'),
       cancelTaskBtn = document.getElementById('cancel__task-btn'),
-      taskList = document.querySelector('.task-llst'),
-      setTask = document.querySelector('.set__task-btn');
+      taskList = document.querySelector('.task-llst');
   
 
 let taskListItem;
@@ -10,11 +10,25 @@ let addTaskInput;
 //создал переменную для динамической подстановки индекса для label
 let i = 0;
 
-addTaskBtn.addEventListener('click', function() {
-  addTaskBtn.style.display = 'none';
-  setTaskBtn.style.display = 'block';
-  cancelTaskBtn.style.display = 'block';
-  addTaskStart();
+headerMenu.addEventListener('click', function(e) {
+  switch (e.target.id) {
+    case 'add__task-btn':
+      addTaskBtn.style.display = 'none';
+      readyTaskBtn.style.display = 'block';
+      cancelTaskBtn.style.display = 'block';
+      addTaskStart();
+      break;
+  
+    case 'cancel__task-btn':
+      readyTaskBtn.style.display = 'none';
+      cancelTaskBtn.style.display = 'none';
+      break;
+
+    case 'ready__task-btn':
+      addTaskEnd();
+      break;  
+
+  }
 });
 
 function addTaskStart() {
@@ -22,72 +36,63 @@ function addTaskStart() {
   taskListItem.insertAdjacentHTML('beforeend', '<input class="task-list-add" type="text" value="">');
   taskList.append(taskListItem);  
   addTaskInput = document.querySelector('.task-list-add');
-  
-
-  addTaskInput.onblur = () =>{
-    addTaskBtn.style.display = 'block';
-    if (addTaskInput.value.length < 1) {
-      addTaskInput.remove();
-      return;
-    }
-    taskListItem.classList.add('task-list__item');
-    addTaskEnd();
-  };
-
 
   addTaskInput.focus();
   i++;
 
   addTaskInput.onkeydown = (e) => {
-    if(e.key == 'Enter') {
-      if (addTaskInput.value.length < 1) {
-        addTaskInput.remove();
-        return;
-      }
+    if(e.key === 'Enter') {
       addTaskEnd();
     }
   };
 
-  setTask.oncklick = () => {
+  addTaskInput.onblur = () => {
     addTaskEnd();
   };
 
 }
 
-
-
 function addTaskEnd() {
+  addTaskBtn.style.display = 'block';
+  readyTaskBtn.style.display = 'none';
+  cancelTaskBtn.style.display = 'none';
+  //если пользователь ничего не ввел, то выходим
+  if (addTaskInput.value.length < 1) {
+    addTaskInput.parentElement.remove();
+    return;
+  }  
+  taskListItem.classList.add('task-list__item');
   taskListItem.innerHTML =
     `<input name="task__${i}" id="task__${i}" type="checkbox"value="${i}">
     <label class="task-list__label" for="task__${i}">${addTaskInput.value}</label>`;
-  setTaskBtn.style.display = 'none';
-  cancelTaskBtn.style.display = 'none';
-
 }
 
+//отслеживаем изменения в списке задач
 taskList.addEventListener('change', function(e) {
-  let inputCheck = [...document.querySelectorAll('[type="checkbox"]:checked')];
+  let inputsCheck = [...document.querySelectorAll('[type="checkbox"]:checked')];
   let editTaskBtn = document.getElementById('edit__task-btn');
   let delTaskBtn = document.getElementById('del__task-btn');
 
-  console.log(inputCheck.length);
+  if (inputsCheck.length == 1) {
+    editTaskBtn.style.display = 'block';
+    delTaskBtn.style.display = 'block';
+  } else if (inputsCheck.length > 1){
+    editTaskBtn.style.display = 'none';
+    delTaskBtn.style.display = 'block';
+  } else {
+    editTaskBtn.style.display = 'none';
+    delTaskBtn.style.display = 'none';
+  }
 
-  // inputCheck.forEach((input) => {
-  //   let arrInputCheck = [];
-
-  //   if(input.checked) {
-  //     arrInputCheck.push(input.checked);
-  //   } 
-  //   console.log(arrInputCheck.length);
-
-  //   // if (e.target.getAttribute('type') == 'checkbox') {
-  //   //   if (e.target.checked) {
-        
-  //   //     // editTaskBtn.style.display = 'block';
-  //   //     // delTaskBtn.style.display = 'block';
-  //   //   } 
-  //   // }
-
-  // });
+  //Удаляем отмеченные задачи
+  delTaskBtn.onclick = () => {
+    inputsCheck.forEach(input => {
+      delTask(input);
+    });
+  }
   
 });
+
+function delTask(input) {
+    input.parentElement.remove();
+}
