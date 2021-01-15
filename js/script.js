@@ -26,8 +26,8 @@ headerMenu.addEventListener('click', function(e) {
 
     case 'ready__task-btn':
       addTaskEnd();
-      break;  
-
+      break; 
+      
   }
 });
 
@@ -89,10 +89,34 @@ taskList.addEventListener('change', function(e) {
     inputsCheck.forEach(input => {
       delTask(input);
     });
+    //Если пользователь удалил все задачи, то скрываем кнопки "Изменить" и "Удалить"
+    // if ([...document.querySelectorAll('.task-list__item')].length < 1) {
+    //   editTaskBtn.style.display = 'none';
+    //   delTaskBtn.style.display = 'none';
+    // }
   }
-  
+
+  editTaskBtn.onclick = () => {
+    inputsCheck.forEach(input => {
+      editTaskStart(input, document.querySelector('.task-list__label'));
+    });
+    
+  }
+
+  function delTask(inputCheck) {
+    inputCheck.parentElement.remove();
+    editTaskBtn.style.display = 'none';
+    delTaskBtn.style.display = 'none';
+  }
+
 });
 
-function delTask(input) {
-    input.parentElement.remove();
+
+
+function editTaskStart(inputCheck) {
+  let label = inputCheck.nextElementSibling;
+  // console.log(label);
+  label.replaceWith(addTaskInput);
+  addTaskInput.innerHTML = label.innerHTML;
+  addTaskInput.focus();
 }

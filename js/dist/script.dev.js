@@ -92,10 +92,30 @@ taskList.addEventListener('change', function (e) {
   delTaskBtn.onclick = function () {
     inputsCheck.forEach(function (input) {
       delTask(input);
+    }); //Если пользователь удалил все задачи, то скрываем кнопки "Изменить" и "Удалить"
+    // if ([...document.querySelectorAll('.task-list__item')].length < 1) {
+    //   editTaskBtn.style.display = 'none';
+    //   delTaskBtn.style.display = 'none';
+    // }
+  };
+
+  editTaskBtn.onclick = function () {
+    inputsCheck.forEach(function (input) {
+      editTaskStart(input, document.querySelector('.task-list__label'));
     });
   };
+
+  function delTask(inputCheck) {
+    inputCheck.parentElement.remove();
+    editTaskBtn.style.display = 'none';
+    delTaskBtn.style.display = 'none';
+  }
 });
 
-function delTask(input) {
-  input.parentElement.remove();
+function editTaskStart(inputCheck) {
+  var label = inputCheck.nextElementSibling; // console.log(label);
+
+  label.replaceWith(addTaskInput);
+  addTaskInput.innerHTML = label.innerHTML;
+  addTaskInput.focus();
 }
