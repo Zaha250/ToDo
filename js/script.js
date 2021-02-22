@@ -13,13 +13,15 @@ let i = 0;
 //Если задачи уже были добавлены, то выводим их
 if (localStorage.length > 0) {
   for (let task of Object.keys(localStorage)) {
+    i++;
     taskListItem = document.createElement('li');
     taskList.append(taskListItem);
     taskListItem.classList.add('task-list__item');
     taskListItem.innerHTML = `
-      <input name="task__${i}" id="task__${i}" type="checkbox"value="${i}">
+      <input name="task__${i}" id="task__${i}" type="checkbox"value="${localStorage.getItem(task)}">
       <label class="task-list__label" for="task__${i}">${localStorage.getItem(task)}</ label>
     `;
+    
   }
   
 }
@@ -118,6 +120,7 @@ taskList.addEventListener('change', function(e) {
   function delTask(inputCheck) {
     inputCheck.parentElement.remove();
 
+    //Удаляем отмеченную задачу в localStorage
     for (let i = 0; i < localStorage.length; i++) {
       let key = localStorage.key(i);
       if (inputCheck.value == localStorage.getItem(key)) {
@@ -127,14 +130,12 @@ taskList.addEventListener('change', function(e) {
 
     editTaskBtn.style.display = 'none';
     delTaskBtn.style.display = 'none';
-    // delete localStorage.key(1);
   }
 
 });
 
 function editTaskStart(inputCheck) {
   let label = inputCheck.nextElementSibling;
-  // console.log(label);
   label.replaceWith(addTaskInput);
   addTaskInput.innerHTML = label.innerHTML;
   addTaskInput.focus();
@@ -142,9 +143,4 @@ function editTaskStart(inputCheck) {
 
 function addTaskLocalStorage(index, valueTask) {
   localStorage.setItem(index, valueTask);
-}
-
-for (let i = 0; i < localStorage.length; i++) {
-  let key = localStorage.key(i);
-  console.log(`${key}: ${localStorage.getItem(key)}`);
 }
