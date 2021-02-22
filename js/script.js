@@ -10,6 +10,20 @@ let addTaskInput;
 //создал переменную для динамической подстановки индекса для label
 let i = 0;
 
+//Если задачи уже были добавлены, то выводим их
+if (localStorage.length > 0) {
+  for (let task of Object.keys(localStorage)) {
+    taskListItem = document.createElement('li');
+    taskList.append(taskListItem);
+    taskListItem.classList.add('task-list__item');
+    taskListItem.innerHTML = `
+      <input name="task__${i}" id="task__${i}" type="checkbox"value="${i}">
+      <label class="task-list__label" for="task__${i}">${localStorage.getItem(task)}</ label>
+    `;
+  }
+  
+}
+
 headerMenu.addEventListener('click', function(e) {
   switch (e.target.id) {
     case 'add__task-btn':
@@ -36,9 +50,10 @@ function addTaskStart() {
   taskListItem.insertAdjacentHTML('beforeend', '<input class="task-list-add" type="text" value="">');
   taskList.append(taskListItem);  
   addTaskInput = document.querySelector('.task-list-add');
+  i++;
+  
 
   addTaskInput.focus();
-  i++;
 
   addTaskInput.onkeydown = (e) => {
     if(e.key === 'Enter') {
@@ -63,8 +78,10 @@ function addTaskEnd() {
   }  
   taskListItem.classList.add('task-list__item');
   taskListItem.innerHTML =
-    `<input name="task__${i}" id="task__${i}" type="checkbox"value="${i}">
+    `<input name="task__${i}" id="task__${i}" type="checkbox"value="${addTaskInput.value}">
     <label class="task-list__label" for="task__${i}">${addTaskInput.value}</label>`;
+
+  addTaskLocalStorage(`${i}`, addTaskInput.value);
 }
 
 //отслеживаем изменения в списке задач
@@ -89,11 +106,6 @@ taskList.addEventListener('change', function(e) {
     inputsCheck.forEach(input => {
       delTask(input);
     });
-    //Если пользователь удалил все задачи, то скрываем кнопки "Изменить" и "Удалить"
-    // if ([...document.querySelectorAll('.task-list__item')].length < 1) {
-    //   editTaskBtn.style.display = 'none';
-    //   delTaskBtn.style.display = 'none';
-    // }
   }
 
   editTaskBtn.onclick = () => {
@@ -105,13 +117,20 @@ taskList.addEventListener('change', function(e) {
 
   function delTask(inputCheck) {
     inputCheck.parentElement.remove();
+
+    for (let i = 0; i < localStorage.length; i++) {
+      let key = localStorage.key(i);
+      if (inputCheck.value == localStorage.getItem(key)) {
+        localStorage.removeItem(key)
+      }
+    }
+
     editTaskBtn.style.display = 'none';
     delTaskBtn.style.display = 'none';
+    // delete localStorage.key(1);
   }
 
 });
-
-
 
 function editTaskStart(inputCheck) {
   let label = inputCheck.nextElementSibling;
@@ -119,4 +138,13 @@ function editTaskStart(inputCheck) {
   label.replaceWith(addTaskInput);
   addTaskInput.innerHTML = label.innerHTML;
   addTaskInput.focus();
+}
+
+function addTaskLocalStorage(index, valueTask) {
+  localStorage.setItem(index, valueTask);
+}
+
+for (let i = 0; i < localStorage.length; i++) {
+  let key = localStorage.key(i);
+  console.log(`${key}: ${localStorage.getItem(key)}`);
 }
